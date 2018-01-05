@@ -1,35 +1,36 @@
 
 # ScreensaverKit
 
-ScreensaverKit is a screensaver toolkit written in Delphi, that supports rapidly building screensavers for Windows platform.
-
 ![Main](screenshots/main.png)
 
-### Features
+## About
 
-* Supports building screensaver on Windows 10 platform
-* Supports IE rendering engine
-* Has customizable URL
-* Has customizable splash background color and logo (default is total black)
+ScreensaverKit is a screensaver toolkit written in Delphi, that supports easily building screensavers for Windows platform.
+
+## Features
+
 * Multi monitor support (duplicates across all monitors)
-* Hotkey binding to start screensaver (Achieved by accessing the screensavers settings, and clicking on create shortcut, which creates a desktop shortcut binded to the hotkey Ctrl+Alt+L)
-* Cleaned up the settings screen
-* Added an indefinite progress bar that reacts to url loading and error
-* Support for JPG is added
+* Provides hotkey binding internally
+* Provides settings supports for options persistence
+* Supports building screensavers for Windows 10 platform
+* True screensaver mode (hide taskbar, full screen, etc.)
+* Single instance checks to disallow screensaver from running more than once
 * Mouse and keyboard detection to exit the screensaver has been optimized
+* Handling external changes to screensaver screen(s)
+
+## Example
+
+* Supports IE rendering engine
+* Customizable URL
+* Customizable splash background color and logo (default is black without logo)
+* Hotkey binding to start screensaver (Achieved by accessing the screensavers settings, and clicking on create shortcut, which creates a desktop shortcut binded to the hotkey Ctrl+Alt+L)
+* An indefinite progress bar that reacts to normal and erroneous url loading
+* Support for JPG logos
 * Made embedded IE chromeless (no scrollbars, no borders, no clickable content)
-* Handled external changes to screensaver screen
-* Fixes to screensaver mode (to Hide taskbar, full screen, etc)
-* Single instance checks to disallow screensaver from running twice
 
-### Requirements
+## Requirements
 
-* Windows 10
-* Embarcadero Rad Studio XE8
-
-### Prerequisites
-
-Some demo examples utilizes modules from [Project JEDI](https://rometools.github.io/rome/), therefore you must have the following projects installed into your Delphi development environment.
+Some examples utilize modules from _Project JEDI_, therefore you must have the following libraries installed into your Delphi development environment.
 
 * [JEDI Code Library](https://github.com/project-jedi/jcl/)
 * [JEDI Visual Component Library](https://github.com/project-jedi/jvcl/)
@@ -50,4 +51,4 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 ## License
 
-ScreensaverKit is licensed under the MIT License - see the [LICENSE](LICENSE.md) file for details.
+ScreensaverKit is licensed under the MIT License. See [LICENSE](LICENSE.md) for details.
