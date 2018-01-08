@@ -8,8 +8,8 @@ uses
   UContainer in 'UContainer.pas',
   ScreensaverKit in '..\..\src\ScreensaverKit.pas',
   ScreensaverKit.SettingUtils in '..\..\src\ScreensaverKit.SettingUtils.pas',
-  ScreensaverKit.WebBrowserUtils in '..\..\src\ScreensaverKit.WebBrowserUtils.pas',
-  ScreensaverKit.ShortcutUtils in '..\..\src\ScreensaverKit.ShortcutUtils.pas';
+  ScreensaverKit.ShortcutUtils in '..\..\src\ScreensaverKit.ShortcutUtils.pas',
+  ScreensaverKit.WebBrowserUtils in '..\..\src\ScreensaverKit.WebBrowserUtils.pas';
 
 {$R *.res}
 {$E scr}

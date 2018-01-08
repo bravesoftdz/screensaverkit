@@ -46,6 +46,7 @@ uses
   https://support.microsoft.com/en-us/help/182383/info-screen-saver-command-line-arguments
   http://www.tek-tips.com/faqs.cfm?fid=6914
   http://www.mindspring.com/~cityzoo/scrnsavr.html
+
 *)
 
 type
@@ -64,6 +65,7 @@ type
     function GetSecondArgument(): String;
     procedure DecodeScreenSaverMode();
 
+    procedure TaskDialog(const Title, Msg: string);
     procedure RegisterWindowStation;
   public
     Settings: TScreensaverSettings;
@@ -138,8 +140,7 @@ uses
   Messages,
   Math,
   Dialogs,
-  ScreensaverKit.ShortcutUtils,
-  Main, Settings;
+  ScreensaverKit.ShortcutUtils;
 
 const
   SETTINGS_ARGUMENT = '';
@@ -361,37 +362,61 @@ var
 begin
   case Screensaver.GetScreenSaverMode of
     smPreview: begin
+      try
         if Screensaver.GetParentHandle<>0 then begin
-          Application.CreateForm(TMainForm, MainForm);
+          Application.CreateForm(TFormClass(FindClass('TMainForm')), MainForm);
           Application.Run;
         end;
+      except // EClassNotFound
+        Application.Terminate;
+      end;
     end;
     smSettings: begin
-      Application.CreateForm(TSettingForm, SettingsForm);
-      Application.Run;
+      try
+        Application.CreateForm(TFormClass(FindClass('TSettingForm')), SettingsForm);
+        Application.Run;
+      except // EClassNotFound
+        TaskDialog('No options', 'This screen saver had no options that you can set.');
+      end;
     end;
     smSettingsModal: begin
-      Application.CreateForm(TSettingForm, SettingsForm);
-      if Screensaver.GetParentHandle<>0 then begin
-        SettingsForm.ParentWindow := Screensaver.GetParentHandle;
+      try
+        Application.CreateForm(TFormClass(FindClass('TSettingForm')), SettingsForm);
+        if Screensaver.GetParentHandle<>0 then begin
+          SettingsForm.ParentWindow := Screensaver.GetParentHandle;
+        end;
+        SettingsForm.ShowModal;
+      except // EClassNotFound
+        TaskDialog('No options', 'This screen saver had no options that you can set.');
       end;
-      SettingsForm.ShowModal;
     end;
     smRun: begin
       if IsSingleInstance(SCREENSAVERKIT_MUTEX, true) then begin
         SetLength(MainForms, Screen.MonitorCount);
-        for i := 0 to High(MainForms) do begin
-          Application.CreateForm(TMainForm, MainForms[i]);
-          MainForms[i].Visible := True;
-          MainForms[i].MonitorId := i;
-          MainForms[i].BoundsRect := Screen.Monitors[i].BoundsRect;
+        try
+          for i := 0 to High(MainForms) do begin
+            Application.CreateForm(TFormClass(FindClass('TMainForm')), MainForms[i]);
+            MainForms[i].Visible := True;
+            MainForms[i].MonitorId := i;
+            MainForms[i].BoundsRect := Screen.Monitors[i].BoundsRect;
+          end;
+          Application.Run;
+        except // EClassNotFound
+          Application.Terminate;
         end;
-        Application.Run;
       end;
     end;
     smPassword: begin
     end;
   end;
+end;
+
+procedure TScreensaver.TaskDialog(const Title, Msg: string);
+var
+  TaskDialog: TTaskDialog;
+  Button: TTaskDialogBaseButtonItem;
+begin
+  TaskMessageDlg(Title, Msg, mtInformation, [mbOK], 0);
 end;
 
 { TScreensaverSettingForm }

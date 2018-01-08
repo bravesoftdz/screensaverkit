@@ -18,7 +18,7 @@ ScreensaverKit is a screensaver toolkit written in Delphi, that supports easily 
 * Mouse and keyboard detection to exit the screensaver has been optimized
 * Handling external changes to screensaver screen(s)
 
-## Example
+## Demo features
 
 * Supports IE rendering engine
 * Customizable URL
@@ -28,12 +28,66 @@ ScreensaverKit is a screensaver toolkit written in Delphi, that supports easily 
 * Support for JPG logos
 * Made embedded IE chromeless (no scrollbars, no borders, no clickable content)
 
-## Requirements
+### Prerequisites
 
-Some examples utilize modules from _Project JEDI_, therefore you must have the following libraries installed into your Delphi development environment.
+The ScreensaverKit library has no external dependencies on third party libraries or frameworks.
 
-* [JEDI Code Library](https://github.com/project-jedi/jcl/)
-* [JEDI Visual Component Library](https://github.com/project-jedi/jvcl/)
+But the demo examples utilize modules from [JCL](https://github.com/project-jedi/jcl) and [JVCL](https://github.com/project-jedi/jvcl), therefore you must have it installed into your Delphi development environment before attempting to run them.
+
+## API
+<!--
+### Constructor
+
+`TMaximalRectangle.Create(bound);`
+
+| Names | Required | Type | Description
+| --- | --- | --- | ---
+| bound | `false` | `TRect` | bounding rectangle
+
+### Properties
+
+| Names | Description
+| --- | ---
+| Count | count of added obstacles
+| Obstacles | returns an array of added obstacles
+-->
+### Methods
+
+| Names | Description
+| --- | ---
+| `Screensaver.Initialize` | sets bounding rectangle
+| `Screensaver.Run` | adds an obstacle
+
+## Usage
+
+The key difference between a ScreensaverKit based application, and a standard Delphi application is the usage of `Screensaver.Initialize` and `Screensaver.Run`. We do not reference or use `Application` or any of it's methods and variables.
+
+Here is an example setup from one of the accompanied demo examples.
+
+```delphi
+program InternetScreensaver;
+
+uses
+  Main in 'Main.pas' {MainForm},
+  Settings in 'Settings.pas' {SettingsForm},
+  UNulContainer in 'UNulContainer.pas',
+  IntfDocHostUIHandler in 'IntfDocHostUIHandler.pas',
+  UContainer in 'UContainer.pas',
+  ScreensaverKit in '..\..\src\ScreensaverKit.pas',
+  ScreensaverKit.SettingUtils in '..\..\src\ScreensaverKit.SettingUtils.pas',
+  ScreensaverKit.WebBrowserUtils in '..\..\src\ScreensaverKit.WebBrowserUtils.pas',
+  ScreensaverKit.ShortcutUtils in '..\..\src\ScreensaverKit.ShortcutUtils.pas';
+
+{$R *.res}
+{$E scr}
+
+begin
+  Screensaver.Initialize;
+  Screensaver.Run;
+end.
+```
+
+Kindly notice the usage of the `{$E} ` compiler directive, which is set to output a binary file with the `SCR` extension, that is the default extension for Windows-based screensavers. This can be commented for debugging purposes, and the project will automatically run in screensaver preview mode.
 
 <!--
 

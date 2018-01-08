@@ -6,10 +6,6 @@
 * Ability to override default mouse movement trigger (5 pixels)
 * Ability to define mode if single/mirroring/extend
 * Main/Settings from registration by injection
-* If no MAIN form is reachable by bus then exit immediately
-* If no SEETINGS is rechable by bus then show information message dialog
-  No options
-  This screen saver had no options that you can set.
 * Debug mode
 	Shows a dialog that ask whether to run the main or settings form
 
