@@ -66,6 +66,7 @@ type
     procedure DecodeScreenSaverMode();
 
     procedure TaskDialog(const Title, Msg: string);
+    function InvokeDebugDialog(): TModalResult;
     procedure RegisterWindowStation;
   public
     Settings: TScreensaverSettings;
@@ -359,8 +360,26 @@ var
   MainForm: TScreensaverMainForm;
   SettingsForm: TScreensaverSettingForm;
   i : Integer;
+
+  Mode: TScreensaverMode;
 begin
-  case Screensaver.GetScreenSaverMode of
+  Mode := Screensaver.GetScreenSaverMode;
+
+  if DebugHook<>0 then begin
+    case InvokeDebugDialog() of
+      mrYes: begin
+        Mode := smRun;
+      end;
+      mrNo: begin
+        Mode := smSettings;
+      end;
+      mrCancel: begin
+        Mode := smUnknown;
+      end;
+    end;
+  end;
+
+  case Mode of
     smPreview: begin
       try
         if Screensaver.GetParentHandle<>0 then begin
@@ -411,12 +430,68 @@ begin
   end;
 end;
 
+function GetScreensaverName: String;
+begin
+  result := ChangeFileExt(ExtractFileName(Application.ExeName), '');
+end;
+
 procedure TScreensaver.TaskDialog(const Title, Msg: string);
 var
   TaskDialog: TTaskDialog;
   Button: TTaskDialogBaseButtonItem;
 begin
-  TaskMessageDlg(Title, Msg, mtInformation, [mbOK], 0);
+  with TTaskDialog.Create(nil) do begin
+    Caption := GetScreensaverName;
+    Title := Title;
+    Text := Msg;
+    CommonButtons := [tcbOk];
+    Execute;
+  end;
+end;
+
+function TScreensaver.InvokeDebugDialog(): TModalResult;
+begin
+  result := mrCancel;
+
+  with TTaskDialog.Create(nil) do begin
+    Caption := GetScreensaverName;
+    Title := 'Debug Mode';
+    Text := 'Which feature of the screensaver do you want to test?';
+    CommonButtons := [];
+    with TTaskDialogButtonItem(Buttons.Add) do begin
+      Caption := 'Main';
+      CommandLinkHint := '';
+      ModalResult := mrYes;
+    end;
+    with TTaskDialogButtonItem(Buttons.Add) do begin
+      Caption := 'Settings';
+      CommandLinkHint := '';
+      ModalResult := mrNo;
+    end;
+    with TTaskDialogButtonItem(Buttons.Add) do begin
+      Caption := 'Exit';
+      CommandLinkHint := '';
+      ModalResult := mrCancel;
+    end;
+    Flags := [tfUseCommandLinks];
+    MainIcon := tdiError;
+    if Execute then begin
+      case ModalResult of
+        mrYes: begin
+          // Test main form
+          result := ModalResult;
+        end;
+        mrNo: begin
+          // Test settings form
+          result := ModalResult;
+        end;
+        mrCancel: begin
+          // Cancel
+          result := ModalResult;
+        end;
+      end;
+    end;
+  end;
 end;
 
 { TScreensaverSettingForm }
@@ -577,7 +652,7 @@ begin
 end;
 
 initialization
-  Screensaver := TScreensaver.Create(ChangeFileExt(ExtractFileName(Application.ExeName), ''));
+  Screensaver := TScreensaver.Create(GetScreensaverName);
 finalization
   Screensaver.Free;
 end.

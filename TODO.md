@@ -6,8 +6,6 @@
 * Ability to override default mouse movement trigger (5 pixels)
 * Ability to define mode if single/mirroring/extend
 * Main/Settings from registration by injection
-* Debug mode
-	Shows a dialog that ask whether to run the main or settings form
 
 # Inspiration
 
@@ -20,7 +18,7 @@ http://www.gifsaver.io
 https://support.microsoft.com/en-us/help/182383/info-screen-saver-command-line-arguments
 https://msdn.microsoft.com/en-us/library/windows/desktop/ms646284(v=vs.85).aspx
 
-Yes, but no example that I know of. A kiosk application only differs from a normal application in only a few areas. NOthing changes as far as how you develop the application.
+Yes, but no example that I know of. A kiosk application only differs from a normal application in only a few areas. Nothing changes as far as how you develop the application.
 
 1. Oversized controls. Typically, you use large controls and fonts for the interface. It makes things easier to read and use for all age groups.
 

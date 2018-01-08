@@ -87,7 +87,7 @@ begin
 end.
 ```
 
-Kindly notice the usage of the `{$E} ` compiler directive, which is set to output a binary file with the `SCR` extension, that is the default extension for Windows-based screensavers. This can be commented for debugging purposes, and the project will automatically run in screensaver preview mode.
+Kindly notice the usage of the `{$E} ` compiler directive. This sets the compiled binary file to have a `SCR` extension, which is the default extension for Windows based screensavers. *Notice*: This can be commented, and when run within the Delphi IDE, a special screensaver debug mode will kick in.
 
 <!--
 
